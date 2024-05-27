@@ -1,0 +1,46 @@
+.hero-section {
+    display: flex;
+    flex-direction: column;
+    justify-between: space-between;
+    align-items: center;
+    /* padding: 6rem 1.5rem; */
+    /* background-color: #6b5400; Deep Blue */
+    /* margin-top: 70px; Adjust this value to match the height of your header */
+  }
+  
+  .hero-content p {
+    font-size: 1 rem;
+    font-weight: 300;
+  }
+  
+  .hero-image img {
+    width: 80%;
+    height: auto;
+  }
+  
+  @media (min-width: 768px) {
+    .hero-section {
+      flex-direction: row;
+      padding: 12rem 3rem;
+    }
+  
+    .hero-content p {
+      font-size: 2rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .hero-section {
+      padding: 20rem 3rem;
+    }
+  
+    .hero-content p {
+      font-size: 2.5rem;
+    }
+  }
+  
+  @media (min-width: 1280px) {
+    .hero-content p {
+      font-size: 3rem;
+    }
+  }
