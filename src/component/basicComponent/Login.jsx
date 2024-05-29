@@ -3,39 +3,30 @@ import { useNavigate } from "react-router-dom";
 import { Button, TextField, Grid, Snackbar, Alert } from '@mui/material';
 import axios from 'axios';
 
-const Login = () => {
-  const [email, setEmail] = useState("");
+const Login = ({ onClose }) => {
+  const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("success");
   const navigate = useNavigate();
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const response = await axios.post("http://localhost:5000/api/auth/login", { email, password });
-  //     setSnackbarMessage("Login successful");
-  //     setSnackbarSeverity("success");
-  //     setOpenSnackBar(true);
-  //     setTimeout(() => {
-  //       navigate("/dashboard"); // Redirect to dashboard after successful login
-  //     }, 1500);
-  //   } catch (error) {
-  //     setSnackbarMessage(error.response?.data?.message || "Login failed");
-  //     setSnackbarSeverity("error");
-  //     setOpenSnackBar(true);
-  //   }
-  // };
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-     
+      // Assuming the API endpoint expects an "id" and "password"
+      // const response = await axios.post("http://localhost:5000/api/auth/login", { id, password });
+      // setSnackbarMessage("Login successful");
+      // setSnackbarSeverity("success");
+      // setOpenSnackBar(true);
       setTimeout(() => {
-        navigate("/dashboard"); // Redirect to dashboard after successful login
+        if (onClose) onClose(); // Close the modal after successful login
+        navigate("/dashboard"); // Redirect to dashboard
       }, 1500);
     } catch (error) {
-      
+      setSnackbarMessage(error.response?.data?.message || "Login failed");
+      setSnackbarSeverity("error");
+      setOpenSnackBar(true);
     }
   };
 
@@ -50,13 +41,13 @@ const Login = () => {
           <Grid item xs={12}>
             <TextField
               required
-              id="email"
-              name="email"
-              label="Email"
+              id="id"
+              name="id"
+              label="ID"
               fullWidth
-              autoComplete="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              autoComplete="id"
+              value={id}
+              onChange={(e) => setId(e.target.value)}
             />
           </Grid>
           <Grid item xs={12}>

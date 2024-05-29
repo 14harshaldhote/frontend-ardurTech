@@ -45,11 +45,13 @@ function StaticComment({ uncheckedFields }) {
       <h3 className="font-semibold text-gray-900 dark:text-white mb-4">
         Total Comments ({allComments.length})
       </h3>
-      {allComments.map((comment, index) => (
-        <p key={index} className="mb-2 text-gray-700 dark:text-gray-900">
-          {comment}
-        </p>
-      ))}
+      <ol className="list-decimal ml-5 text-gray-700 dark:text-gray-900">
+        {allComments.map((comment, index) => (
+          <li key={index} className="mb-2">
+            {comment}
+          </li>
+        ))}
+      </ol>
     </div>
   );
 }

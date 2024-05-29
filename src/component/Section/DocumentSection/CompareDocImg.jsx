@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
 import ZoomInIcon from '@mui/icons-material/ZoomIn';
 import ZoomOutIcon from '@mui/icons-material/ZoomOut';
+import CloseIcon from '@mui/icons-material/Close';
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -45,6 +46,11 @@ const CompareDocImg = ({ pdfFile, syncScroll }) => {
     }
   };
 
+  const handleClose = () => {
+    setFile(null);
+    setNumPages(null);
+  };
+
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.addEventListener('scroll', syncScroll);
@@ -70,9 +76,9 @@ const CompareDocImg = ({ pdfFile, syncScroll }) => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center w-full">
+    <div className="flex flex-col items-center w-full h-full relative">
       <div className="w-full flex justify-center my-4 relative">
-        <div ref={containerRef} className="overflow-auto max-h-96 w-full border-2 border-gray-300 rounded-2xl">
+        <div ref={containerRef} className="overflow-auto max-h-full w-full border-2 border-gray-300 rounded-2xl bg-slate-200/50 flex-1 relative">
           {file && (
             <Document file={file} onLoadSuccess={onDocumentLoadSuccess}>
               {Array.from(new Array(numPages), (el, index) => (
@@ -86,14 +92,19 @@ const CompareDocImg = ({ pdfFile, syncScroll }) => {
               ))}
             </Document>
           )}
-          <div className="absolute top-2 right-2 flex space-x-2">
-            <button onClick={handleZoomIn} className="p-2 bg-blue-500/50 hover:bg-blue-500 text-white rounded-full">
-              <ZoomInIcon />
-            </button>
-            <button onClick={handleZoomOut} className="p-2 bg-blue-500/50 hover:bg-blue-500 text-white rounded-full">
-              <ZoomOutIcon />
-            </button>
-          </div>
+          {file && (
+            <div className="fixed top-2 right-2 flex space-x-2">
+              <button onClick={handleZoomIn} className="p-2 bg-blue-500/50 hover:bg-blue-500 text-white rounded-full">
+                <ZoomInIcon />
+              </button>
+              <button onClick={handleZoomOut} className="p-2 bg-blue-500/50 hover:bg-blue-500 text-white rounded-full">
+                <ZoomOutIcon />
+              </button>
+              <button onClick={handleClose} className="p-2 bg-red-500/50 hover:bg-red-500 text-white rounded-full">
+                <CloseIcon />
+              </button>
+            </div>
+          )}
         </div>
       </div>
       <input

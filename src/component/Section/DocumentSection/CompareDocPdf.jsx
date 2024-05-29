@@ -1,5 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Document, Page, pdfjs } from 'react-pdf';
+import ZoomInIcon from '@mui/icons-material/ZoomIn';
+import ZoomOutIcon from '@mui/icons-material/ZoomOut';
+import CloseIcon from '@mui/icons-material/Close';
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
@@ -8,19 +12,7 @@ const CompareDocPdf = ({ setPdfFile, syncScroll }) => {
   const [numPages, setNumPages] = useState(null);
   const [scale, setScale] = useState(1.0);
   const containerRef = useRef(null);
-
-  useEffect(() => {
-    if (containerRef.current) {
-      containerRef.current.addEventListener('scroll', syncScroll);
-      containerRef.current.addEventListener('wheel', handleWheel);
-    }
-    return () => {
-      if (containerRef.current) {
-        containerRef.current.removeEventListener('scroll', syncScroll);
-        containerRef.current.removeEventListener('wheel', handleWheel);
-      }
-    };
-  }, [syncScroll]);
+  const [containerWidth, setContainerWidth] = useState(0);
 
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
@@ -55,22 +47,61 @@ const CompareDocPdf = ({ setPdfFile, syncScroll }) => {
     }
   };
 
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.addEventListener('scroll', syncScroll);
+      containerRef.current.addEventListener('wheel', handleWheel);
+      setContainerWidth(containerRef.current.clientWidth);
+    }
+    return () => {
+      if (containerRef.current) {
+        containerRef.current.removeEventListener('scroll', syncScroll);
+        containerRef.current.removeEventListener('wheel', handleWheel);
+      }
+    };
+  }, [syncScroll]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (containerRef.current) {
+        setContainerWidth(containerRef.current.clientWidth);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
-    <div className="flex flex-col items-center">
-      <div className="w-full flex justify-center my-4">
-        <div ref={containerRef} className="overflow-auto max-h-96 w-full border-2 border-gray-300 rounded-2xl">
+    <div className="flex flex-col items-center w-full h-full relative">
+      <div className="w-full flex justify-center my-4 relative">
+        <div ref={containerRef} className="overflow-auto max-h-full w-full border-2 border-gray-300 rounded-2xl bg-slate-200/50 flex-1 relative">
           {pdf && (
-            <Document file={pdf} onLoadSuccess={onDocumentLoadSuccess} renderMode="canvas">
+            <Document file={pdf} onLoadSuccess={onDocumentLoadSuccess}>
               {Array.from(new Array(numPages), (el, index) => (
-                <Page key={`page_${index + 1}`} pageNumber={index + 1} scale={scale} />
+                <Page
+                  key={`page_${index + 1}`}
+                  pageNumber={index + 1}
+                  width={containerWidth * scale}
+                  renderTextLayer={false}
+                  renderAnnotationLayer={false}
+                />
               ))}
             </Document>
           )}
+          {pdf && (
+            <div className="absolute top-2 right-2 flex space-x-2">
+              <button onClick={handleZoomIn} className="p-2 bg-blue-500/50 hover:bg-blue-500 text-white rounded-full">
+                <ZoomInIcon />
+              </button>
+              <button onClick={handleZoomOut} className="p-2 bg-blue-500/50 hover:bg-blue-500 text-white rounded-full">
+                <ZoomOutIcon />
+              </button>
+              <button onClick={() => setPdf(null)} className="p-2 bg-red-500/50 hover:bg-red-500 text-white rounded-full">
+                <CloseIcon />
+              </button>
+            </div>
+          )}
         </div>
-      </div>
-      <div className="flex space-x-2 mb-4">
-        <button onClick={handleZoomIn} className="px-4 py-2 bg-blue-500 text-white rounded">Zoom In</button>
-        <button onClick={handleZoomOut} className="px-4 py-2 bg-blue-500 text-white rounded">Zoom Out</button>
       </div>
       <input
         type="file"

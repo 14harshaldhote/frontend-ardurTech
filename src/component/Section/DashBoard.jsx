@@ -33,14 +33,14 @@ function Dashboard() {
   const progress = (checkedCount / totalItems) * 100;
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen rounded-lg">
       <div className="flex justify-center p-3">
         <div className="w-3/4">
           <ProgressBar progress={progress} />
         </div>
       </div>
-      <div className="flex flex-1">
-        <div className="w-1/5 bg-slate-200/50 p-4 overflow-auto pt-2">
+      <div className="flex flex-1 overflow-hidden">
+        <div className="w-1/5 bg-slate-200/50 p-4 overflow-auto pt-2 rounded-lg">
           <div className="mb-4">
             <SectionList onUpdate={handleUpdate} />
           </div>
@@ -51,8 +51,8 @@ function Dashboard() {
             <Comments />
           </div>
         </div>
-        <div className="w-4/5 flex flex-col bg-gray-400 overflow-auto">
-          <div className="flex-1 overflow-auto">
+        <div className="w-4/5 flex flex-col bg-slate-800/10 overflow-hidden rounded-lg p-2">
+          <div className="flex-1 overflow-auto mb-2">
             <CompareDocImg ref={pdfImgRef} pdfFile={pdfFile} syncScroll={syncScroll} />
           </div>
           <div className="flex-1 overflow-auto">
