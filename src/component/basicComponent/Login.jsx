@@ -87,7 +87,7 @@ const Login = () => {
       </form>
       <div className="flex justify-center flex-col items-center">
         <div className="py-3 flex items-center">
-          <p className="m-0 p-0">Don't have an account?</p>
+          <p className="m-0 p-0 text-gray-900">Don't have an account?</p>
           <Button onClick={() => navigate("/register")} className="ml-5" size="small">
             Register
           </Button>

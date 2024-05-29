@@ -24,7 +24,7 @@ function SectionList({ onUpdate }) {
 
   return (
     // <div className="p-4 bg-pink-200 rounded-lg shadow-md dark:bg-gray-800/20 ">
-    <div className="p-4 bg-pink-200 rounded-lg shadow-md dark:bg-gray-800/20 ">
+    <div className="p-4 bg-white rounded-lg shadow-md dark:bg-gray-600/20 ">
       <h2 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">Property Details:</h2>
       <ul className="max-w-md max-h-40 space-y-1 overflow-y-scroll text-gray-500 list-inside dark:text-gray-900">
         {fields.map((field, index) => (
