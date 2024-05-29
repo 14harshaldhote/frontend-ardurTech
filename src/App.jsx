@@ -20,7 +20,6 @@ import { BrowserRouter as Router } from "react-router-dom";
 import Header from "./component/basicComponent/Header";
 import Footer from "./component/basicComponent/Footer";
 import RouterComponent from "./Routes/Router";
-// import "./assets/styles/styles.css";
 
 const App = () => {
   return (
@@ -37,3 +36,4 @@ const App = () => {
 };
 
 export default App;
+

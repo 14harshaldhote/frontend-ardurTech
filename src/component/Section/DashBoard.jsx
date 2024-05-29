@@ -12,6 +12,7 @@ import { fields } from './fields';
 function Dashboard() {
   const [pdfFile, setPdfFile] = useState(null);
   const [checkedCount, setCheckedCount] = useState(0);
+  const [uncheckedFields, setUncheckedFields] = useState(fields);
   const pdfImgRef = useRef(null);
   const pdfPdfRef = useRef(null);
 
@@ -22,8 +23,10 @@ function Dashboard() {
     }
   };
 
-  const handleUpdate = (count) => {
+  const handleUpdate = (count, checkedItems) => {
     setCheckedCount(count);
+    const newUncheckedFields = fields.filter((_, index) => !checkedItems[index]);
+    setUncheckedFields(newUncheckedFields);
   };
 
   const totalItems = fields.length;
@@ -31,14 +34,22 @@ function Dashboard() {
 
   return (
     <div className="flex flex-col h-screen">
-      <div className="w-full p-20">
-        <ProgressBar progress={progress} />
+      <div className="flex justify-center p-3">
+        <div className="w-3/4">
+          <ProgressBar progress={progress} />
+        </div>
       </div>
       <div className="flex flex-1">
-        <div className="w-1/5 bg-gray-200 p-4 overflow-auto">
-          <SectionList onUpdate={handleUpdate} />
-          <StaticComment />
-          <Comments />
+        <div className="w-1/5 bg-slate-200/50 p-4 overflow-auto pt-2">
+          <div className="mb-4">
+            <SectionList onUpdate={handleUpdate} />
+          </div>
+          <div className="mb-4">
+            <StaticComment uncheckedFields={uncheckedFields} />
+          </div>
+          <div className="mb-4">
+            <Comments />
+          </div>
         </div>
         <div className="w-4/5 flex flex-col bg-gray-400 overflow-auto">
           <div className="flex-1 overflow-auto">
